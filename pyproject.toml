@@ -21,6 +21,7 @@ dependencies = [
   "tenacity>=8.2,<9.0",
   "trafilatura>=1.7,<2.0",
   "beautifulsoup4>=4.12,<5.0",
+  "readability-lxml>=0.8.1,<0.9",
   "llama-cpp-python>=0.2.26",
   "huggingface-hub>=0.19,<1.0",
   "numpy>=1.25,<2.0",

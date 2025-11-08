@@ -17,9 +17,11 @@ large enough to deliver dependable answers.
   base64-encoded images.
 - **Real-time Brave search** – uses Brave's Search API for live, privacy
   friendly results.
-- **Best-in-class scraping** – integrates the open-source
-  [Trafilatura](https://github.com/adbar/trafilatura) extractor to retrieve clean
-  article text, paired with resilient HTTP fetching.
+- **Best-in-class scraping** – layers the open-source
+  [Trafilatura](https://github.com/adbar/trafilatura) extractor with
+  [readability-lxml](https://github.com/buriy/python-readability/) and
+  BeautifulSoup fallbacks to consistently retrieve clean article text, paired
+  with resilient HTTP fetching.
 - **Automatic summarisation** – each fetched document is summarised before being
   injected into the LLM prompt, preventing context overflow and keeping the
   model focused.
@@ -181,8 +183,11 @@ Relevant options are documented in `app/config.py` and surfaced through
 
 ## Testing & Further Work
 
-- Unit tests can be added under `tests/` (framework hooks already in
-  `pyproject.toml`).
+- Run the existing test suite with:
+  
+  ```bash
+  pytest
+  ```
 - For heavy workloads, consider running Scarper behind a queue and pooling model
   workers to serialise access to the LLaVA weights.
 - Additional scrapers (e.g. Playwright-based solutions) can be layered on for
