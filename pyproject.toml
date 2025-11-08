@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scarper"
+version = "0.1.0"
+description = "Backend service bridging a local multimodal LLM with Brave web search and scraping."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+  {name = "cto.new"}
+]
+dependencies = [
+  "fastapi>=0.109,<0.111",
+  "uvicorn[standard]>=0.24,<0.26",
+  "pydantic>=2.0,<3.0",
+  "pydantic-settings>=2.0,<3.0",
+  "httpx>=0.24,<0.26",
+  "tenacity>=8.2,<9.0",
+  "trafilatura>=1.7,<2.0",
+  "beautifulsoup4>=4.12,<5.0",
+  "llama-cpp-python>=0.2.26",
+  "huggingface-hub>=0.19,<1.0",
+  "numpy>=1.25,<2.0",
+  "pillow>=10.0,<11.0",
+  "python-multipart>=0.0.9",
+  "rich>=13.7,<14.0"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.4,<8.0",
+  "pytest-asyncio>=0.21,<0.23"
+]
+
+[tool.setuptools.packages.find]
+where = ["app"]
