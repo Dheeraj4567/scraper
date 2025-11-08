@@ -8,6 +8,7 @@ from typing import Iterable, List, Optional, Tuple
 import httpx
 import trafilatura
 from bs4 import BeautifulSoup
+from readability import Document
 
 from app.config import Settings
 
@@ -81,6 +82,25 @@ class WebScraperService:
         return ScrapedDocument(url=url, title=title, text=text_content)
 
     def _fallback_extract(self, html: str) -> Tuple[Optional[str], Optional[str]]:
+        readability_text, readability_title = self._readability_extract(html)
+        if readability_text:
+            return readability_text, readability_title
+        return self._beautifulsoup_extract(html)
+
+    def _readability_extract(self, html: str) -> Tuple[Optional[str], Optional[str]]:
+        try:
+            document = Document(html)
+            summary_html = document.summary()
+            summary_text = BeautifulSoup(summary_html, "html.parser").get_text(" ", strip=True)
+            title = document.short_title() or document.title()
+            clean_text = summary_text.strip() if summary_text else None
+            clean_title = title.strip() if title else None
+            return clean_text if clean_text else None, clean_title
+        except Exception as exc:  # pragma: no cover - library failure
+            logger.debug("Readability extraction failed: %s", exc)
+            return None, None
+
+    def _beautifulsoup_extract(self, html: str) -> Tuple[Optional[str], Optional[str]]:
         soup = BeautifulSoup(html, "html.parser")
 
         for tag in soup(["script", "style", "noscript", "template"]):
